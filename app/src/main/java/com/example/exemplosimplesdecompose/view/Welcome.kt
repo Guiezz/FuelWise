@@ -27,20 +27,47 @@ import androidx.navigation.NavHostController
 import com.example.exemplosimplesdecompose.R
 
 @Composable
-fun Welcome(navController: NavHostController) { //Recebe o elemento que permite realizar a navegação
+fun Welcome(navController: NavHostController) {
+    var selectedLanguage by remember { mutableStateOf("pt") } // pt ou en
+
+    val welcomeText = if (selectedLanguage == "pt") "Bem-vindos ao Navigation Example!" else "Welcome to the Navigation Example!"
+    val imageDescription = if (selectedLanguage == "pt") "Imagem de boas-vindas" else "Welcome image"
+    val selectLanguageText = if (selectedLanguage == "pt") "Selecione o idioma:" else "Select language:"
+    val buttonPortuguese = if (selectedLanguage == "pt") "Português" else "Portuguese"
+    val buttonEnglish = if (selectedLanguage == "pt") "Inglês" else "English"
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Bem-vindos ao Navigation Example!")
+        Text(text = welcomeText)
         Spacer(modifier = Modifier.height(16.dp))
+
         Image(
-            painter = painterResource(id = R.drawable.welcome), // Substituir pelo seu recurso
-            contentDescription = "Imagem de boas-vindas",
+            painter = painterResource(id = R.drawable.welcome),
+            contentDescription = imageDescription,
             modifier = Modifier
                 .size(128.dp)
-                .clickable { navController.navigate("input") }
+                .clickable { navController.navigate("mainalcgas") }
         )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(text = selectLanguageText)
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Button(onClick = { selectedLanguage = "pt" }) {
+                Text(text = buttonPortuguese)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = { selectedLanguage = "en" }) {
+                Text(text = buttonEnglish)
+            }
+        }
     }
 }
+
