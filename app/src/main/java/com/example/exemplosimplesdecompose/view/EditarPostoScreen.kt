@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.exemplosimplesdecompose.Utils.SwitchPreferences
-import com.example.exemplosimplesdecompose.data.Posto
 import com.example.exemplosimplesdecompose.data.PostoPrefs
 
 @OptIn(ExperimentalMaterial3Api::class)
