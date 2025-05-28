@@ -4,16 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,93 +33,78 @@ import com.example.exemplosimplesdecompose.R
 
 @Composable
 fun Welcome(navController: NavHostController) {
-    var selectedLanguage by remember { mutableStateOf("pt") } // pt ou en
+    var selectedLanguage by remember { mutableStateOf("pt") }
 
-    // Textos dinâmicos baseados no idioma selecionado
     val appName = "FuelWise"
     val slogan = if (selectedLanguage == "pt") "Seu assistente inteligente de combustível!" else "Your smart fuel assistant!"
     val imageDescription = if (selectedLanguage == "pt") "Logo do FuelWise" else "FuelWise Logo"
     val selectLanguageText = if (selectedLanguage == "pt") "Selecione o idioma:" else "Select language:"
-    val buttonPortuguese = "Português" // Mantido como está, pois "Português" é universalmente entendido no contexto
-    val buttonEnglish = "English" // Mantido como está
-    val continueButtonText = if (selectedLanguage == "pt") "Começar" else "Get Started"
+    val buttonPortuguese = "Português"
+    val buttonEnglish = "English"
+    val continueButtonText = if (selectedLanguage == "pt") "Começar a Calcular" else "Get Started" // Texto do botão principal ajustado
+    val viewSavedPostsButtonText = if (selectedLanguage == "pt") "Ver Postos Salvos" else "View Saved Stations"
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // Utiliza a cor de fundo do tema
-            .padding(32.dp), // Aumenta o padding geral
+            .background(MaterialTheme.colorScheme.background)
+            .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Logo do Aplicativo
         Image(
             painter = painterResource(id = R.drawable.gas),
             contentDescription = imageDescription,
-            modifier = Modifier.size(160.dp)
+            modifier = Modifier.size(160.dp),
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Nome do Aplicativo
         Text(
             text = appName,
-            style = MaterialTheme.typography.headlineLarge, // Estilo de título maior
-            color = MaterialTheme.colorScheme.primary, // Cor primária do tema
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Slogan
         Text(
             text = slogan,
-            style = MaterialTheme.typography.titleMedium, // Estilo para o slogan
-            color = MaterialTheme.colorScheme.onSurfaceVariant, // Cor para texto secundário
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
-        // Seleção de Idioma
-        Text(
-            text = selectLanguageText,
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { selectedLanguage = "pt" },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedLanguage == "pt") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (selectedLanguage == "pt") MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                Text(text = buttonPortuguese)
-            }
-            Button(
-                onClick = { selectedLanguage = "en" },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedLanguage == "en") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (selectedLanguage == "en") MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                Text(text = buttonEnglish)
-            }
-        }
-        Spacer(modifier = Modifier.height(48.dp))
-
-        // Botão Continuar
         Button(
             onClick = { navController.navigate("mainalcgas") },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp) // Altura padrão para botões
+                .height(50.dp)
         ) {
             Text(
                 text = continueButtonText,
-                style = MaterialTheme.typography.labelLarge // Estilo para texto de botão
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+
+        OutlinedButton(
+            onClick = {
+                navController.navigate("lista/todos/0.0/0.0")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Icon(
+                Icons.Filled.List,
+                contentDescription = viewSavedPostsButtonText,
+                modifier = Modifier.size(ButtonDefaults.IconSize)
+            )
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(
+                text = viewSavedPostsButtonText,
+                style = MaterialTheme.typography.labelLarge
             )
         }
     }
