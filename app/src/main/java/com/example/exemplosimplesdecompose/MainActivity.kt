@@ -16,7 +16,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.exemplosimplesdecompose.ui.theme.ExemploSimplesDeComposeTheme
 import com.example.exemplosimplesdecompose.view.AlcoolGasolinaPreco
-import com.example.exemplosimplesdecompose.view.InputView
 import com.example.exemplosimplesdecompose.view.ListaDePostos
 import com.example.exemplosimplesdecompose.view.Welcome
 import com.example.exemplosimplesdecompose.view.EditarPostoScreen
@@ -30,7 +29,6 @@ class MainActivity : ComponentActivity() {
                 val navController: NavHostController = rememberNavController()
                 NavHost(navController = navController, startDestination = "welcome") {
                     composable("welcome") { Welcome(navController) }
-                    composable("input") { InputView(navController) }
                     composable("mainalcgas") { AlcoolGasolinaPreco(navController) }
                     composable(
                         "lista/{nome}/{lat}/{lng}",
