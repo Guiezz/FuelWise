@@ -1,9 +1,10 @@
 package com.example.exemplosimplesdecompose.view
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,54 +22,103 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.exemplosimplesdecompose.R
+import com.example.exemplosimplesdecompose.R // Certifique-se que R.drawable.welcome existe ou substitua
 
 @Composable
 fun Welcome(navController: NavHostController) {
     var selectedLanguage by remember { mutableStateOf("pt") } // pt ou en
 
-    val welcomeText = if (selectedLanguage == "pt") "Bem-vindos ao Navigation Example!" else "Welcome to the Navigation Example!"
-    val imageDescription = if (selectedLanguage == "pt") "Imagem de boas-vindas" else "Welcome image"
+    // Textos dinâmicos baseados no idioma selecionado
+    val appName = "FuelWise"
+    val slogan = if (selectedLanguage == "pt") "Seu assistente inteligente de combustível!" else "Your smart fuel assistant!"
+    val imageDescription = if (selectedLanguage == "pt") "Logo do FuelWise" else "FuelWise Logo"
     val selectLanguageText = if (selectedLanguage == "pt") "Selecione o idioma:" else "Select language:"
-    val buttonPortuguese = if (selectedLanguage == "pt") "Português" else "Portuguese"
-    val buttonEnglish = if (selectedLanguage == "pt") "Inglês" else "English"
+    val buttonPortuguese = "Português" // Mantido como está, pois "Português" é universalmente entendido no contexto
+    val buttonEnglish = "English" // Mantido como está
+    val continueButtonText = if (selectedLanguage == "pt") "Começar" else "Get Started"
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .background(MaterialTheme.colorScheme.background) // Utiliza a cor de fundo do tema
+            .padding(32.dp), // Aumenta o padding geral
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = welcomeText)
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Logo do Aplicativo
         Image(
-            painter = painterResource(id = R.drawable.welcome),
+            painter = painterResource(id = R.drawable.gas),
             contentDescription = imageDescription,
-            modifier = Modifier
-                .size(128.dp)
-                .clickable { navController.navigate("mainalcgas") }
+            modifier = Modifier.size(160.dp)
         )
+        Spacer(modifier = Modifier.height(24.dp))
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Text(text = selectLanguageText)
+        // Nome do Aplicativo
+        Text(
+            text = appName,
+            style = MaterialTheme.typography.headlineLarge, // Estilo de título maior
+            color = MaterialTheme.colorScheme.primary, // Cor primária do tema
+            textAlign = TextAlign.Center
+        )
         Spacer(modifier = Modifier.height(8.dp))
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { selectedLanguage = "pt" }) {
+        // Slogan
+        Text(
+            text = slogan,
+            style = MaterialTheme.typography.titleMedium, // Estilo para o slogan
+            color = MaterialTheme.colorScheme.onSurfaceVariant, // Cor para texto secundário
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(48.dp))
+
+        // Seleção de Idioma
+        Text(
+            text = selectLanguageText,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = { selectedLanguage = "pt" },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (selectedLanguage == "pt") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (selectedLanguage == "pt") MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            ) {
                 Text(text = buttonPortuguese)
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { selectedLanguage = "en" }) {
+            Button(
+                onClick = { selectedLanguage = "en" },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (selectedLanguage == "en") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (selectedLanguage == "en") MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            ) {
                 Text(text = buttonEnglish)
             }
         }
+        Spacer(modifier = Modifier.height(48.dp))
+
+        // Botão Continuar
+        Button(
+            onClick = { navController.navigate("mainalcgas") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp) // Altura padrão para botões
+        ) {
+            Text(
+                text = continueButtonText,
+                style = MaterialTheme.typography.labelLarge // Estilo para texto de botão
+            )
+        }
     }
 }
-
