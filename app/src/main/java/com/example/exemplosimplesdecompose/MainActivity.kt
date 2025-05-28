@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
                             navArgument("lng") { type = NavType.StringType }
                         )
                     ) {
-                        val nome = it.arguments?.getString("nome") ?: "Posto"
+                        val nome = it.arguments?.getString("nome") ?: getString(R.string.list_map_fallback_station_name)
                         val lat = it.arguments?.getString("lat")?.toDoubleOrNull() ?: 0.0
                         val lng = it.arguments?.getString("lng")?.toDoubleOrNull() ?: 0.0
                         ListaDePostos(navController, nome, lat, lng)
@@ -49,11 +50,9 @@ class MainActivity : ComponentActivity() {
                         if (index != null) {
                             EditarPostoScreen(index, navController)
                         } else {
-                            Text("Index inválido")
+                            Text(stringResource(id = R.string.main_invalid_index))
                         }
                     }
-
-
                 }
             }
         }
