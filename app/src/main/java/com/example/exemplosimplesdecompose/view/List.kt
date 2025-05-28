@@ -10,8 +10,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.LocalGasStation
-import androidx.compose.material.icons.filled.Map // Ícone para o botão de mapa
-import androidx.compose.material.icons.filled.WarningAmber // Ícone para lista vazia
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.WarningAmber
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -104,7 +104,7 @@ fun ListaDePostos(
                     .fillMaxSize()
                     .padding(innerPadding),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp) // Espaçamento entre os cards
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 itemsIndexed(postos, key = { _, posto -> posto.nome.toString() + (posto.coordenadas?.latitude ?: 0.0) }) { index, posto ->
                     Card(
@@ -160,7 +160,7 @@ fun ListaDePostos(
                                 }
                                 IconButton(onClick = {
                                     postoPrefs.deletarPosto(index)
-                                    postos = postoPrefs.getPostos() // Recarrega a lista
+                                    postos = postoPrefs.getPostos()
                                 }) {
                                     Icon(Icons.Default.Delete, contentDescription = "Excluir Posto", tint = MaterialTheme.colorScheme.error)
                                 }

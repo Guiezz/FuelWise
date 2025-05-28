@@ -32,7 +32,6 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
     val postoPrefs = remember { PostoPrefs(context) }
     val switchPrefs = remember { SwitchPreferences(context) }
 
-    // Tenta carregar o posto. Se não encontrar, exibe mensagem e retorna.
     val postoOriginal = postoPrefs.getPostos().getOrNull(index)
     if (postoOriginal == null) {
         Scaffold(
@@ -57,11 +56,9 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
     var precoAlcool by remember { mutableStateOf(postoOriginal.precoAlcool?.toString()?.replace('.', ',') ?: "") }
     var precoGasolina by remember { mutableStateOf(postoOriginal.precoGasolina?.toString()?.replace('.', ',') ?: "") }
 
-    // O estado do switch é carregado das preferências, mas pode ser atualizado pelo cálculo
     var checkedState by remember { mutableStateOf(switchPrefs.getSwitchState()) }
     var resultadoCalculo by remember { mutableStateOf("Preencha os valores para calcular.") }
 
-    // Atualiza o resultado se já houver preços no posto original
     LaunchedEffect(postoOriginal) {
         val alcohol = postoOriginal.precoAlcool
         val gas = postoOriginal.precoGasolina
@@ -72,12 +69,10 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                 gas == 0.0 -> resultadoCalculo = "Preço da gasolina inválido."
                 alcohol / gas < 0.7 -> {
                     checkedState = true
-                    // switchPrefs.saveSwitchState(true) // Não salvar aqui, apenas refletir
                     resultadoCalculo = "$currentPostoNome: Álcool é a melhor opção!"
                 }
                 else -> {
                     checkedState = false
-                    // switchPrefs.saveSwitchState(false) // Não salvar aqui, apenas refletir
                     resultadoCalculo = "$currentPostoNome: Gasolina é a melhor opção!"
                 }
             }
@@ -163,8 +158,6 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                         checked = checkedState,
                         onCheckedChange = {
                             checkedState = it
-                            // A preferência do switch pode ser salva, mas o cálculo a sobrescreverá.
-                            // A principal função do switch aqui é refletir o cálculo ou permitir uma substituição manual.
                             switchPrefs.saveSwitchState(it)
                         },
                         thumbContent = {
@@ -195,13 +188,11 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                             resultadoCalculo = "Preço da gasolina não pode ser zero."
                         }
                         alcohol / gas < 0.7 -> {
-                            checkedState = true // Atualiza o switch
-                            // switchPrefs.saveSwitchState(true) // Salva o estado se o switch for manipulado manualmente
+                            checkedState = true
                             resultadoCalculo = "$currentPostoNome: Álcool é a melhor opção!"
                         }
                         else -> {
-                            checkedState = false // Atualiza o switch
-                            // switchPrefs.saveSwitchState(false) // Salva o estado se o switch for manipulado manualmente
+                            checkedState = false
                             resultadoCalculo = "$currentPostoNome: Gasolina é a melhor opção!"
                         }
                     }
@@ -227,23 +218,19 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f)) // Empurra o botão Salvar para baixo se houver espaço
-
+            Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = {
                     val novoPrecoAlcoolDouble = precoAlcool.replace(",", ".").toDoubleOrNull()
                     val novoPrecoGasolinaDouble = precoGasolina.replace(",", ".").toDoubleOrNull()
 
-                    // Cria um novo objeto Posto com os valores atualizados
-                    // As coordenadas originais são mantidas
                     val postoAtualizado = postoOriginal.copy(
                         nome = nome,
                         precoAlcool = novoPrecoAlcoolDouble,
                         precoGasolina = novoPrecoGasolinaDouble
-                        // As coordenadas não são editadas nesta tela, então mantemos as originais.
                     )
                     postoPrefs.atualizarPosto(index, postoAtualizado)
-                    navController.popBackStack() // Volta para a tela anterior (ListaDePostos)
+                    navController.popBackStack()
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)

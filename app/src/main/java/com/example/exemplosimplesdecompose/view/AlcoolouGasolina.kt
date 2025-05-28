@@ -68,7 +68,7 @@ import com.google.android.gms.location.Priority
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlcoolGasolinaPreco(navController: NavHostController) {
-    val context = LocalContext.current // Contexto da Composable
+    val context = LocalContext.current
     val switchPrefs = remember { SwitchPreferences(context) }
     val postoPrefs = remember { PostoPrefs(context) }
 
@@ -86,7 +86,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (isGranted) {
-                getLastKnownLocation(context, fusedLocationClient) { // Passando o context
+                getLastKnownLocation(context, fusedLocationClient) {
                     lastLocation = it
                 }
             } else {
@@ -362,12 +362,10 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
 
 @SuppressLint("MissingPermission")
 private fun getLastKnownLocation(
-    context: android.content.Context, // Adicionado o context como parâmetro
+    context: android.content.Context,
     fusedLocationProviderClient: FusedLocationProviderClient,
     onLocationReceived: (Location?) -> Unit
 ) {
-    // A verificação de permissão é feita antes de chamar esta função.
-    // No entanto, uma verificação defensiva aqui não é ruim.
     if (ActivityCompat.checkSelfPermission(
             context,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -377,7 +375,7 @@ private fun getLastKnownLocation(
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) != PackageManager.PERMISSION_GRANTED
     ) {
-        onLocationReceived(null) // Permissão não concedida
+        onLocationReceived(null)
         return
     }
 
@@ -388,9 +386,9 @@ private fun getLastKnownLocation(
             } else {
                 val locationRequest =
                     LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000L)
-                        .apply { // Uso do Builder
+                        .apply {
                             setMinUpdateIntervalMillis(5000L)
-                            setMaxUpdates(1) // Corrigido para setMaxUpdates
+                            setMaxUpdates(1)
                         }.build()
 
                 val locationCallback = object : LocationCallback() {
