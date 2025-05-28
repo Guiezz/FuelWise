@@ -22,12 +22,26 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Calculate // Adicionado
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.EvStation // Adicionado
-import androidx.compose.material.icons.filled.LocalGasStation // Adicionado
-import androidx.compose.material.icons.filled.Storefront // Adicionado
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.EvStation
+import androidx.compose.material.icons.filled.LocalGasStation
+import androidx.compose.material.icons.filled.Storefront
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -85,25 +99,24 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
 
     LaunchedEffect(Unit) {
         checkedState = switchPrefs.getSwitchState()
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
-            getLastKnownLocation(context, fusedLocationClient) { lastLocation = it } // Passando o context
+            getLastKnownLocation(context, fusedLocationClient) {
+                lastLocation = it
+            } // Passando o context
         }
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Calcular & Salvar Posto") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            )
-        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -162,32 +175,42 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                 onValueChange = { nomeDoPosto = it },
                 label = { Text("Nome do Posto (Opcional)") },
                 modifier = Modifier.fillMaxWidth(),
-                leadingIcon = { Icon(Icons.Filled.Storefront, contentDescription = "Nome do Posto") },
+                leadingIcon = {
+                    Icon(
+                        Icons.Filled.Storefront,
+                        contentDescription = "Nome do Posto"
+                    )
+                },
                 singleLine = true
             )
 
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
-                    value = alcool,
-                    onValueChange = { alcool = it },
-                    label = { Text("Álcool") },
-                    modifier = Modifier.weight(1f),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    leadingIcon = { Icon(Icons.Filled.EvStation, contentDescription = "Preço Álcool") },
-                    trailingIcon = { Text("R$") },
-                    singleLine = true
-                )
-                OutlinedTextField(
-                    value = gasolina,
-                    onValueChange = { gasolina = it },
-                    label = { Text("Gasolina") },
-                    modifier = Modifier.weight(1f),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    leadingIcon = { Icon(Icons.Filled.LocalGasStation, contentDescription = "Preço Gasolina") },
-                    trailingIcon = { Text("R$") },
-                    singleLine = true
-                )
-            }
+
+            OutlinedTextField(
+                value = alcool,
+                onValueChange = { alcool = it },
+                label = { Text("Álcool") },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                leadingIcon = { Icon(Icons.Filled.EvStation, contentDescription = "Preço Álcool") },
+                trailingIcon = { Text("R$") },
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = gasolina,
+                onValueChange = { gasolina = it },
+                label = { Text("Gasolina") },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                leadingIcon = {
+                    Icon(
+                        Icons.Filled.LocalGasStation,
+                        contentDescription = "Preço Gasolina"
+                    )
+                },
+                trailingIcon = { Text("R$") },
+                singleLine = true
+            )
+
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -200,7 +223,9 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
+                    Column(modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp)) {
                         Text(
                             "Resultado (Álcool < 70% da Gasolina):",
                             style = MaterialTheme.typography.bodyLarge
@@ -233,12 +258,20 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
                     ) {
                         locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                     } else {
-                        getLastKnownLocation(context, fusedLocationClient) { lastLocation = it } // Passando o context
+                        getLastKnownLocation(context, fusedLocationClient) {
+                            lastLocation = it
+                        } // Passando o context
                     }
 
                     val alcoholPrice = alcool.replace(",", ".").toDoubleOrNull()
@@ -249,14 +282,17 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                         alcoholPrice == null || gasPrice == null -> {
                             result = "Valores de preço inválidos."
                         }
+
                         gasPrice == 0.0 -> {
                             result = "Preço da gasolina não pode ser zero."
                         }
+
                         alcoholPrice / gasPrice < 0.7 -> {
                             checkedState = true
                             switchPrefs.saveSwitchState(true)
                             result = "$currentPostoNome: Álcool é a melhor opção!"
                         }
+
                         else -> {
                             checkedState = false
                             switchPrefs.saveSwitchState(false)
@@ -265,20 +301,38 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                     }
 
                     lastLocation?.let {
-                        result += "\nCoordenadas: (${String.format("%.4f", it.latitude)}, ${String.format("%.4f", it.longitude)})"
+                        result += "\nCoordenadas: (${
+                            String.format(
+                                "%.4f",
+                                it.latitude
+                            )
+                        }, ${String.format("%.4f", it.longitude)})"
                     } ?: run {
-                        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                            ) == PackageManager.PERMISSION_GRANTED ||
+                            ActivityCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                            ) == PackageManager.PERMISSION_GRANTED
+                        ) {
                             result += "\n(Tentando obter localização...)"
                         } else {
                             result += "\n(Localização não disponível - permissão negada)"
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth().height(50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Icon(Icons.Filled.Calculate, contentDescription = "Calcular", modifier = Modifier.size(ButtonDefaults.IconSize))
+                Icon(
+                    Icons.Filled.Calculate,
+                    contentDescription = "Calcular",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text("Calcular Melhor Opção")
             }
@@ -291,8 +345,16 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                         .padding(vertical = 8.dp)
                         .animateContentSize(),
                     textAlign = TextAlign.Center,
-                    color = if (result.contains("Álcool", ignoreCase = true) && checkedState) MaterialTheme.colorScheme.primary
-                    else if (result.contains("Gasolina", ignoreCase = true) && !checkedState) MaterialTheme.colorScheme.primary
+                    color = if (result.contains(
+                            "Álcool",
+                            ignoreCase = true
+                        ) && checkedState
+                    ) MaterialTheme.colorScheme.primary
+                    else if (result.contains(
+                            "Gasolina",
+                            ignoreCase = true
+                        ) && !checkedState
+                    ) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -308,8 +370,15 @@ private fun getLastKnownLocation(
 ) {
     // A verificação de permissão é feita antes de chamar esta função.
     // No entanto, uma verificação defensiva aqui não é ruim.
-    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    if (ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED &&
+        ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
         onLocationReceived(null) // Permissão não concedida
         return
     }
@@ -319,10 +388,12 @@ private fun getLastKnownLocation(
             if (location != null) {
                 onLocationReceived(location)
             } else {
-                val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000L).apply { // Uso do Builder
-                    setMinUpdateIntervalMillis(5000L)
-                    setMaxUpdates(1) // Corrigido para setMaxUpdates
-                }.build()
+                val locationRequest =
+                    LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000L)
+                        .apply { // Uso do Builder
+                            setMinUpdateIntervalMillis(5000L)
+                            setMaxUpdates(1) // Corrigido para setMaxUpdates
+                        }.build()
 
                 val locationCallback = object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult) {

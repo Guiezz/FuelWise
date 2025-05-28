@@ -51,10 +51,15 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Adicione estas duas linhas para os ícones:
+    implementation("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-extended")
+
     implementation(libs.androidx.navigation.compose)
 
     implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.10.1") //
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
