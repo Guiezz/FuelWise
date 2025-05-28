@@ -1,3 +1,63 @@
 <resources>
-    <string name="app_name">ExemploSimplesDeCompose</string>
+    <string name="app_name">FuelWise</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="error">Erro</string>
+    <string name="save">Salvar</string>
+    <string name="alcohol">Álcool</string>
+    <string name="gasoline">Gasolina</string>
+    <string name="station_name">Nome do Posto</string>
+    <string name="price_alcohol">Preço Álcool</string>
+    <string name="price_gasoline">Preço Gasolina</string>
+    <string name="fill_fields_to_calculate">Preencha os campos para calcular.</string>
+    <string name="invalid_price_values">Valores de preço inválidos.</string>
+    <string name="gasoline_price_cannot_be_zero">Preço da gasolina não pode ser zero.</string>
+    <string name="this_station">Este posto</string>
+    <string name="alcohol_is_better_option">%1$s: Álcool é a melhor opção!</string>
+    <string name="gasoline_is_better_option">%1$s: Gasolina é a melhor opção!</string>
+    <string name="unnamed_station">Posto S/ Nome</string>
+
+    <string name="welcome_slogan">Seu assistente inteligente de combustível!</string>
+    <string name="welcome_image_description">Logo do FuelWise</string>
+    <string name="welcome_button_start_calculating">Começar a Calcular</string>
+    <string name="welcome_button_view_saved_stations">Ver Postos Salvos</string>
+
+    <string name="alc_gas_permission_denied">Permissão de localização negada. Coordenadas não serão salvas.</string>
+    <string name="alc_gas_provide_station_name_or_prices">Informe o nome do posto e/ou preços válidos para salvar.</string>
+    <string name="alc_gas_fab_save_list_stations">Salvar e listar postos</string>
+    <string name="alc_gas_station_data_prices">Dados do Posto e Preços:</string>
+    <string name="alc_gas_station_name_optional">Nome do Posto (Opcional)</string>
+    <string name="alc_gas_result_label">Resultado (Álcool &lt; 70% da Gasolina):</string>
+    <string name="alc_gas_alcohol_seems_advantageous">Álcool parece vantajoso.</string>
+    <string name="alc_gas_gasoline_seems_advantageous">Gasolina parece vantajosa.</string>
+    <string name="alc_gas_switch_alcohol_advantageous">Álcool Vantajoso</string>
+    <string name="alc_gas_coordinates_label">\nCoordenadas: (%1$s, %2$s)</string>
+    <string name="alc_gas_getting_location">\n(Tentando obter localização...)</string>
+    <string name="alc_gas_location_not_available">\n(Localização não disponível - permissão negada)</string>
+    <string name="alc_gas_button_calculate">Calcular</string>
+    <string name="alc_gas_button_calculate_best_option">Calcular Melhor Opção</string>
+
+    <string name="edit_station_not_found">Posto não encontrado ou índice inválido.</string>
+    <string name="edit_station_modify_data">Modifique os dados do posto:</string>
+    <string name="edit_station_button_recalculate">Recalcular</string>
+    <string name="edit_station_button_recalculate_best_option">Recalcular Melhor Opção</string>
+    <string name="edit_station_fill_prices_to_calculate">Preencha os preços para calcular.</string>
+    <string name="edit_station_button_save_changes">Salvar Alterações</string>
+
+    <string name="list_my_saved_stations">Meus Postos Salvos</string>
+    <string name="list_add_new_station">Adicionar novo posto</string>
+    <string name="list_empty_icon_description">Lista Vazia</string>
+    <string name="list_empty_message">Nenhum posto salvo ainda.</string>
+    <string name="list_empty_add_instruction">Clique no botão \'+\' para adicionar um novo posto.</string>
+    <string name="list_station_icon_description">Ícone do Posto</string>
+    <string name="list_alcohol_price_prefix">Á: </string>
+    <string name="list_gasoline_price_prefix">G: </string>
+    <string name="list_edit_station">Editar Posto</string>
+    <string name="list_delete_station">Excluir Posto</string>
+    <string name="list_open_in_map">Abrir no Mapa</string>
+    <string name="list_map_fallback_station_name">Posto</string> <string name="main_invalid_index">Index inválido</string>
+
+    <string name="input_type_something">Digite algo</string>
+    <string name="input_go_to_next_screen">Ir para a próxima tela</string>
 </resources>

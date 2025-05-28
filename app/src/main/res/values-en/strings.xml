@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">FuelWise</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="save">Save</string>
+    <string name="alcohol">Alcohol</string>
+    <string name="gasoline">Gasoline</string>
+    <string name="station_name">Station Name</string>
+    <string name="price_alcohol">Alcohol Price</string>
+    <string name="price_gasoline">Gasoline Price</string>
+    <string name="fill_fields_to_calculate">Fill in the fields to calculate.</string>
+    <string name="invalid_price_values">Invalid price values.</string>
+    <string name="gasoline_price_cannot_be_zero">Gasoline price cannot be zero.</string>
+    <string name="this_station">This station</string>
+    <string name="alcohol_is_better_option">%1$s: Alcohol is the best option!</string>
+    <string name="gasoline_is_better_option">%1$s: Gasoline is the best option!</string>
+    <string name="unnamed_station">Unnamed Station</string>
+
+    <string name="welcome_slogan">Your smart fuel assistant!</string>
+    <string name="welcome_image_description">FuelWise Logo</string>
+    <string name="welcome_button_start_calculating">Get Started</string>
+    <string name="welcome_button_view_saved_stations">View Saved Stations</string>
+
+    <string name="alc_gas_permission_denied">Location permission denied. Coordinates will not be saved.</string>
+    <string name="alc_gas_provide_station_name_or_prices">Enter the station name and/or valid prices to save.</string>
+    <string name="alc_gas_fab_save_list_stations">Save and list stations</string>
+    <string name="alc_gas_station_data_prices">Station Data and Prices:</string>
+    <string name="alc_gas_station_name_optional">Station Name (Optional)</string>
+    <string name="alc_gas_result_label">Result (Alcohol &lt; 70% of Gasoline):</string>
+    <string name="alc_gas_alcohol_seems_advantageous">Alcohol seems advantageous.</string>
+    <string name="alc_gas_gasoline_seems_advantageous">Gasoline seems advantageous.</string>
+    <string name="alc_gas_switch_alcohol_advantageous">Alcohol Advantageous</string>
+    <string name="alc_gas_coordinates_label">\nCoordinates: (%1$s, %2$s)</string>
+    <string name="alc_gas_getting_location">\n(Trying to get location...)</string>
+    <string name="alc_gas_location_not_available">\n(Location not available - permission denied)</string>
+    <string name="alc_gas_button_calculate">Calculate</string>
+    <string name="alc_gas_button_calculate_best_option">Calculate Best Option</string>
+
+    <string name="edit_station_not_found">Station not found or invalid index.</string>
+    <string name="edit_station_modify_data">Modify station data:</string>
+    <string name="edit_station_button_recalculate">Recalculate</string>
+    <string name="edit_station_button_recalculate_best_option">Recalculate Best Option</string>
+    <string name="edit_station_fill_prices_to_calculate">Fill in the prices to calculate.</string>
+    <string name="edit_station_button_save_changes">Save Changes</string>
+
+    <string name="list_my_saved_stations">My Saved Stations</string>
+    <string name="list_add_new_station">Add new station</string>
+    <string name="list_empty_icon_description">Empty List</string>
+    <string name="list_empty_message">No saved stations yet.</string>
+    <string name="list_empty_add_instruction">Click the \'+\' button to add a new station.</string>
+    <string name="list_station_icon_description">Station Icon</string>
+    <string name="list_alcohol_price_prefix">A: </string>
+    <string name="list_gasoline_price_prefix">G: </string>
+    <string name="list_edit_station">Edit Station</string>
+    <string name="list_delete_station">Delete Station</string>
+    <string name="list_open_in_map">Open in Map</string>
+    <string name="list_map_fallback_station_name">Station</string> <string name="main_invalid_index">Invalid index</string>
+
+    <string name="input_type_something">Type something</string>
+    <string name="input_go_to_next_screen">Go to next screen</string>
+</resources>
