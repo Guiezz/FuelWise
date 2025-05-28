@@ -21,10 +21,6 @@ O projeto é construído utilizando Kotlin e Jetpack Compose, seguindo as modern
 * **Preferência de Cálculo 📊:** Um switch permite ao usuário indicar manually se o álcool ou a gasolina é mais vantajoso, e essa preferência pode ser salva.
 * **Interface Intuitiva 👋:** Tela de boas-vindas e navegação clara entre as funcionalidades.
 
-## Telas 🖼️ (Screenshots - *placeholder*)
-
-*(Sugestão: Adicione aqui screenshots 📸 das principais telas do aplicativo: Tela de Boas-Vindas, Tela de Cálculo, Tela de Lista de Postos, Tela de Edição)*
-
 ## Tecnologias Utilizadas 🛠️
 
 * **Linguagem de Programação:** Kotlin 𝕂
