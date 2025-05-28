@@ -17,11 +17,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import com.example.exemplosimplesdecompose.R
 import com.example.exemplosimplesdecompose.data.Posto
 import com.example.exemplosimplesdecompose.data.PostoPrefs
 import java.text.NumberFormat
@@ -51,7 +53,7 @@ fun ListaDePostos(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Meus Postos Salvos") },
+                title = { Text(stringResource(id = R.string.list_my_saved_stations)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -64,7 +66,7 @@ fun ListaDePostos(
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer
             ) {
-                Icon(Icons.Filled.Add, contentDescription = "Adicionar novo posto")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(id = R.string.list_add_new_station))
             }
         }
     ) { innerPadding ->
@@ -79,19 +81,19 @@ fun ListaDePostos(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
                         imageVector = Icons.Filled.WarningAmber,
-                        contentDescription = "Lista Vazia",
+                        contentDescription = stringResource(id = R.string.list_empty_icon_description),
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Nenhum posto salvo ainda.",
+                        text = stringResource(id = R.string.list_empty_message),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Clique no botão '+' para adicionar um novo posto.",
+                        text = stringResource(id = R.string.list_empty_add_instruction),
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -121,13 +123,13 @@ fun ListaDePostos(
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.LocalGasStation,
-                                contentDescription = "Ícone do Posto",
+                                contentDescription = stringResource(id = R.string.list_station_icon_description),
                                 modifier = Modifier.size(40.dp).padding(end = 16.dp),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = posto.nome ?: "Posto sem nome",
+                                    text = posto.nome ?: stringResource(id = R.string.unnamed_station),
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -136,7 +138,7 @@ fun ListaDePostos(
                                 Row {
                                     posto.precoAlcool?.let {
                                         Text(
-                                            text = "Á: ${currencyFormatter.format(it)}",
+                                            text = stringResource(id = R.string.list_alcohol_price_prefix) + currencyFormatter.format(it),
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             modifier = Modifier.padding(end = 8.dp)
@@ -144,7 +146,7 @@ fun ListaDePostos(
                                     }
                                     posto.precoGasolina?.let {
                                         Text(
-                                            text = "G: ${currencyFormatter.format(it)}",
+                                            text = stringResource(id = R.string.list_gasoline_price_prefix) + currencyFormatter.format(it),
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -156,19 +158,20 @@ fun ListaDePostos(
                                 IconButton(onClick = {
                                     navController.navigate("editar/$index")
                                 }) {
-                                    Icon(Icons.Default.Edit, contentDescription = "Editar Posto", tint = MaterialTheme.colorScheme.primary)
+                                    Icon(Icons.Default.Edit, contentDescription = stringResource(id = R.string.list_edit_station), tint = MaterialTheme.colorScheme.primary)
                                 }
                                 IconButton(onClick = {
                                     postoPrefs.deletarPosto(index)
                                     postos = postoPrefs.getPostos()
                                 }) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Excluir Posto", tint = MaterialTheme.colorScheme.error)
+                                    Icon(Icons.Default.Delete, contentDescription = stringResource(id = R.string.list_delete_station), tint = MaterialTheme.colorScheme.error)
                                 }
                                 if (posto.coordenadas != null && (posto.coordenadas.latitude != 0.0 || posto.coordenadas.longitude != 0.0)) {
                                     IconButton(onClick = {
+                                        val mapLabel = posto.nome ?: context.getString(R.string.list_map_fallback_station_name)
                                         val gmmIntentUri =
                                             "geo:0,0?q=${posto.coordenadas.latitude},${posto.coordenadas.longitude}(${
-                                                Uri.encode(posto.nome ?: "Posto")
+                                                Uri.encode(mapLabel)
                                             })".toUri()
 
                                         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
@@ -182,7 +185,7 @@ fun ListaDePostos(
                                             context.startActivity(webIntent)
                                         }
                                     }) {
-                                        Icon(Icons.Filled.Map, contentDescription = "Abrir no Mapa", tint = MaterialTheme.colorScheme.secondary)
+                                        Icon(Icons.Filled.Map, contentDescription = stringResource(id = R.string.list_open_in_map), tint = MaterialTheme.colorScheme.secondary)
                                     }
                                 }
                             }

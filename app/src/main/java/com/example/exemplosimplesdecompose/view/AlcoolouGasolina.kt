@@ -49,11 +49,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
+import com.example.exemplosimplesdecompose.R
 import com.example.exemplosimplesdecompose.Utils.SwitchPreferences
 import com.example.exemplosimplesdecompose.data.Coordenadas
 import com.example.exemplosimplesdecompose.data.Posto
@@ -77,7 +79,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
     var nomeDoPosto by remember { mutableStateOf("") }
 
     var checkedState by remember { mutableStateOf(switchPrefs.getSwitchState()) }
-    var result by remember { mutableStateOf("Preencha os campos para calcular.") }
+    var result by remember { mutableStateOf(context.getString(R.string.fill_fields_to_calculate)) }
 
     var lastLocation by remember { mutableStateOf<Location?>(null) }
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
@@ -90,7 +92,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                     lastLocation = it
                 }
             } else {
-                result = "Permissão de localização negada. Coordenadas não serão salvas."
+                result = context.getString(R.string.alc_gas_permission_denied)
             }
         }
     )
@@ -110,7 +112,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
         } else {
             getLastKnownLocation(context, fusedLocationClient) {
                 lastLocation = it
-            } // Passando o context
+            }
         }
     }
 
@@ -122,13 +124,13 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                     val gasValue = gasolina.replace(",", ".").toDoubleOrNull()
 
                     if (nomeDoPosto.isBlank() && (alcoholValue == null || gasValue == null || alcoholValue == 0.0 || gasValue == 0.0)) {
-                        result = "Informe o nome do posto e/ou preços válidos para salvar."
+                        result = context.getString(R.string.alc_gas_provide_station_name_or_prices)
                         return@FloatingActionButton
                     }
 
                     postoPrefs.salvarPosto(
                         Posto(
-                            nome = nomeDoPosto.ifBlank { "Posto S/ Nome (${System.currentTimeMillis()})" },
+                            nome = nomeDoPosto.ifBlank { context.getString(R.string.unnamed_station) + " (${System.currentTimeMillis()})" },
                             coordenadas = Coordenadas(
                                 latitude = lastLocation?.latitude ?: 0.0,
                                 longitude = lastLocation?.longitude ?: 0.0
@@ -138,7 +140,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                         )
                     )
 
-                    val nomeNavegacao = nomeDoPosto.ifBlank { "Posto" }
+                    val nomeNavegacao = nomeDoPosto.ifBlank { context.getString(R.string.list_map_fallback_station_name) } // Usando um fallback genérico
                     val latNavegacao = lastLocation?.latitude ?: 0.0
                     val lngNavegacao = lastLocation?.longitude ?: 0.0
                     navController.navigate("lista/$nomeNavegacao/$latNavegacao/$lngNavegacao") {
@@ -148,7 +150,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
-                Icon(Icons.Filled.Add, "Salvar e listar postos")
+                Icon(Icons.Filled.Add, stringResource(R.string.alc_gas_fab_save_list_stations))
             }
         }
     ) { innerPadding ->
@@ -163,7 +165,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
         ) {
 
             Text(
-                text = "Dados do Posto e Preços:",
+                text = stringResource(R.string.alc_gas_station_data_prices),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -171,12 +173,12 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
             OutlinedTextField(
                 value = nomeDoPosto,
                 onValueChange = { nomeDoPosto = it },
-                label = { Text("Nome do Posto (Opcional)") },
+                label = { Text(stringResource(R.string.alc_gas_station_name_optional)) },
                 modifier = Modifier.fillMaxWidth(),
                 leadingIcon = {
                     Icon(
                         Icons.Filled.Storefront,
-                        contentDescription = "Nome do Posto"
+                        contentDescription = stringResource(R.string.station_name)
                     )
                 },
                 singleLine = true
@@ -186,23 +188,23 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
             OutlinedTextField(
                 value = alcool,
                 onValueChange = { alcool = it },
-                label = { Text("Álcool") },
+                label = { Text(stringResource(R.string.alcohol)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                leadingIcon = { Icon(Icons.Filled.EvStation, contentDescription = "Preço Álcool") },
+                leadingIcon = { Icon(Icons.Filled.EvStation, contentDescription = stringResource(R.string.price_alcohol)) },
                 trailingIcon = { Text("R$") },
                 singleLine = true
             )
             OutlinedTextField(
                 value = gasolina,
                 onValueChange = { gasolina = it },
-                label = { Text("Gasolina") },
+                label = { Text(stringResource(R.string.gasoline)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 leadingIcon = {
                     Icon(
                         Icons.Filled.LocalGasStation,
-                        contentDescription = "Preço Gasolina"
+                        contentDescription = stringResource(R.string.price_gasoline)
                     )
                 },
                 trailingIcon = { Text("R$") },
@@ -225,11 +227,11 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                         .weight(1f)
                         .padding(end = 8.dp)) {
                         Text(
-                            "Resultado (Álcool < 70% da Gasolina):",
+                            stringResource(R.string.alc_gas_result_label),
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
-                            if (checkedState) "Álcool parece vantajoso." else "Gasolina parece vantajosa.",
+                            if (checkedState) stringResource(R.string.alc_gas_alcohol_seems_advantageous) else stringResource(R.string.alc_gas_gasoline_seems_advantageous),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -244,7 +246,7 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                             if (checkedState) {
                                 Icon(
                                     imageVector = Icons.Filled.Check,
-                                    contentDescription = "Álcool Vantajoso",
+                                    contentDescription = stringResource(R.string.alc_gas_switch_alcohol_advantageous),
                                     modifier = Modifier.size(SwitchDefaults.IconSize),
                                     tint = MaterialTheme.colorScheme.primary
                                 )
@@ -269,42 +271,39 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                     } else {
                         getLastKnownLocation(context, fusedLocationClient) {
                             lastLocation = it
-                        } // Passando o context
+                        }
                     }
 
                     val alcoholPrice = alcool.replace(",", ".").toDoubleOrNull()
                     val gasPrice = gasolina.replace(",", ".").toDoubleOrNull()
-                    val currentPostoNome = nomeDoPosto.ifEmpty { "Este posto" }
+                    val currentPostoNome = nomeDoPosto.ifEmpty { context.getString(R.string.this_station) }
 
                     when {
                         alcoholPrice == null || gasPrice == null -> {
-                            result = "Valores de preço inválidos."
+                            result = context.getString(R.string.invalid_price_values)
                         }
 
                         gasPrice == 0.0 -> {
-                            result = "Preço da gasolina não pode ser zero."
+                            result = context.getString(R.string.gasoline_price_cannot_be_zero)
                         }
 
                         alcoholPrice / gasPrice < 0.7 -> {
                             checkedState = true
                             switchPrefs.saveSwitchState(true)
-                            result = "$currentPostoNome: Álcool é a melhor opção!"
+                            result = context.getString(R.string.alcohol_is_better_option, currentPostoNome)
                         }
 
                         else -> {
                             checkedState = false
                             switchPrefs.saveSwitchState(false)
-                            result = "$currentPostoNome: Gasolina é a melhor opção!"
+                            result = context.getString(R.string.gasoline_is_better_option, currentPostoNome)
                         }
                     }
 
                     lastLocation?.let {
-                        result += "\nCoordenadas: (${
-                            String.format(
-                                "%.4f",
-                                it.latitude
-                            )
-                        }, ${String.format("%.4f", it.longitude)})"
+                        result += context.getString(R.string.alc_gas_coordinates_label,
+                            String.format(java.util.Locale.US, "%.4f", it.latitude),
+                            String.format(java.util.Locale.US, "%.4f", it.longitude))
                     } ?: run {
                         if (ActivityCompat.checkSelfPermission(
                                 context,
@@ -315,9 +314,9 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                                 Manifest.permission.ACCESS_COARSE_LOCATION
                             ) == PackageManager.PERMISSION_GRANTED
                         ) {
-                            result += "\n(Tentando obter localização...)"
+                            result += context.getString(R.string.alc_gas_getting_location)
                         } else {
-                            result += "\n(Localização não disponível - permissão negada)"
+                            result += context.getString(R.string.alc_gas_location_not_available)
                         }
                     }
                 },
@@ -328,14 +327,14 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
             ) {
                 Icon(
                     Icons.Filled.Calculate,
-                    contentDescription = "Calcular",
+                    contentDescription = stringResource(R.string.alc_gas_button_calculate),
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Calcular Melhor Opção")
+                Text(stringResource(R.string.alc_gas_button_calculate_best_option))
             }
 
-            if (result != "Preencha os campos para calcular.") {
+            if (result != stringResource(R.string.fill_fields_to_calculate)) {
                 Text(
                     text = result,
                     style = MaterialTheme.typography.titleLarge,
@@ -343,16 +342,8 @@ fun AlcoolGasolinaPreco(navController: NavHostController) {
                         .padding(vertical = 8.dp)
                         .animateContentSize(),
                     textAlign = TextAlign.Center,
-                    color = if (result.contains(
-                            "Álcool",
-                            ignoreCase = true
-                        ) && checkedState
-                    ) MaterialTheme.colorScheme.primary
-                    else if (result.contains(
-                            "Gasolina",
-                            ignoreCase = true
-                        ) && !checkedState
-                    ) MaterialTheme.colorScheme.primary
+                    color = if (result.contains(stringResource(R.string.alcohol), ignoreCase = true) && checkedState) MaterialTheme.colorScheme.primary
+                    else if (result.contains(stringResource(R.string.gasoline), ignoreCase = true) && !checkedState) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.onSurface
                 )
             }

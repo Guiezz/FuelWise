@@ -19,13 +19,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -33,16 +30,6 @@ import com.example.exemplosimplesdecompose.R
 
 @Composable
 fun Welcome(navController: NavHostController) {
-    var selectedLanguage by remember { mutableStateOf("pt") }
-
-    val appName = "FuelWise"
-    val slogan = if (selectedLanguage == "pt") "Seu assistente inteligente de combustível!" else "Your smart fuel assistant!"
-    val imageDescription = if (selectedLanguage == "pt") "Logo do FuelWise" else "FuelWise Logo"
-    val selectLanguageText = if (selectedLanguage == "pt") "Selecione o idioma:" else "Select language:"
-    val buttonPortuguese = "Português"
-    val buttonEnglish = "English"
-    val continueButtonText = if (selectedLanguage == "pt") "Começar a Calcular" else "Get Started" // Texto do botão principal ajustado
-    val viewSavedPostsButtonText = if (selectedLanguage == "pt") "Ver Postos Salvos" else "View Saved Stations"
 
     Column(
         modifier = Modifier
@@ -54,13 +41,13 @@ fun Welcome(navController: NavHostController) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.gas),
-            contentDescription = imageDescription,
+            contentDescription = stringResource(id = R.string.welcome_image_description),
             modifier = Modifier.size(160.dp),
         )
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = appName,
+            text = stringResource(id = R.string.app_name),
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center
@@ -68,7 +55,7 @@ fun Welcome(navController: NavHostController) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = slogan,
+            text = stringResource(id = R.string.welcome_slogan),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -82,7 +69,7 @@ fun Welcome(navController: NavHostController) {
                 .height(50.dp)
         ) {
             Text(
-                text = continueButtonText,
+                text = stringResource(id = R.string.welcome_button_start_calculating),
                 style = MaterialTheme.typography.labelLarge
             )
         }
@@ -98,12 +85,12 @@ fun Welcome(navController: NavHostController) {
         ) {
             Icon(
                 Icons.Filled.List,
-                contentDescription = viewSavedPostsButtonText,
+                contentDescription = stringResource(id = R.string.welcome_button_view_saved_stations),
                 modifier = Modifier.size(ButtonDefaults.IconSize)
             )
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(
-                text = viewSavedPostsButtonText,
+                text = stringResource(id = R.string.welcome_button_view_saved_stations),
                 style = MaterialTheme.typography.labelLarge
             )
         }

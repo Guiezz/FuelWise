@@ -1,4 +1,3 @@
-// com.example.exemplosimplesdecompose.view.EditarPostoScreen
 package com.example.exemplosimplesdecompose.view
 
 import androidx.compose.animation.animateContentSize
@@ -7,21 +6,23 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Calculate // Ícone para Recalcular
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.EvStation // Ícone para Álcool
-import androidx.compose.material.icons.filled.LocalGasStation // Ícone para Gasolina
-import androidx.compose.material.icons.filled.Save // Ícone para Salvar
-import androidx.compose.material.icons.filled.Storefront // Ícone para Nome do Posto
+import androidx.compose.material.icons.filled.EvStation
+import androidx.compose.material.icons.filled.LocalGasStation
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.exemplosimplesdecompose.R
 import com.example.exemplosimplesdecompose.Utils.SwitchPreferences
 import com.example.exemplosimplesdecompose.data.PostoPrefs
 
@@ -37,7 +38,7 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Erro") },
+                    title = { Text(stringResource(id = R.string.error)) },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.errorContainer,
                         titleContentColor = MaterialTheme.colorScheme.onErrorContainer
@@ -46,7 +47,7 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
             }
         ) { padding ->
             Box(modifier = Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
-                Text("Posto não encontrado ou índice inválido.")
+                Text(stringResource(id = R.string.edit_station_not_found))
             }
         }
         return
@@ -57,27 +58,28 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
     var precoGasolina by remember { mutableStateOf(postoOriginal.precoGasolina?.toString()?.replace('.', ',') ?: "") }
 
     var checkedState by remember { mutableStateOf(switchPrefs.getSwitchState()) }
-    var resultadoCalculo by remember { mutableStateOf("Preencha os valores para calcular.") }
+    var resultadoCalculo by remember { mutableStateOf(context.getString(R.string.edit_station_fill_prices_to_calculate)) }
+
 
     LaunchedEffect(postoOriginal) {
         val alcohol = postoOriginal.precoAlcool
         val gas = postoOriginal.precoGasolina
-        val currentPostoNome = nome.ifEmpty { "Este posto" }
+        val currentPostoNome = nome.ifEmpty { context.getString(R.string.this_station) }
 
         if (alcohol != null && gas != null) {
             when {
-                gas == 0.0 -> resultadoCalculo = "Preço da gasolina inválido."
+                gas == 0.0 -> resultadoCalculo = context.getString(R.string.gasoline_price_cannot_be_zero)
                 alcohol / gas < 0.7 -> {
                     checkedState = true
-                    resultadoCalculo = "$currentPostoNome: Álcool é a melhor opção!"
+                    resultadoCalculo = context.getString(R.string.alcohol_is_better_option, currentPostoNome)
                 }
                 else -> {
                     checkedState = false
-                    resultadoCalculo = "$currentPostoNome: Gasolina é a melhor opção!"
+                    resultadoCalculo = context.getString(R.string.gasoline_is_better_option, currentPostoNome)
                 }
             }
         } else {
-            resultadoCalculo = "Preencha os preços para calcular."
+            resultadoCalculo = context.getString(R.string.edit_station_fill_prices_to_calculate)
         }
     }
 
@@ -94,7 +96,7 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
         ) {
 
             Text(
-                text = "Modifique os dados do posto:",
+                text = stringResource(R.string.edit_station_modify_data),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.Start)
             )
@@ -102,9 +104,9 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
             OutlinedTextField(
                 value = nome,
                 onValueChange = { nome = it },
-                label = { Text("Nome do Posto") },
+                label = { Text(stringResource(R.string.station_name)) },
                 modifier = Modifier.fillMaxWidth(),
-                leadingIcon = { Icon(Icons.Filled.Storefront, contentDescription = "Nome do Posto") },
+                leadingIcon = { Icon(Icons.Filled.Storefront, contentDescription = stringResource(R.string.station_name)) },
                 singleLine = true
             )
 
@@ -112,10 +114,10 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                 OutlinedTextField(
                     value = precoAlcool,
                     onValueChange = { precoAlcool = it },
-                    label = { Text("Álcool") },
+                    label = { Text(stringResource(R.string.alcohol)) },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    leadingIcon = { Icon(Icons.Filled.EvStation, contentDescription = "Preço Álcool") },
+                    leadingIcon = { Icon(Icons.Filled.EvStation, contentDescription = stringResource(R.string.price_alcohol)) },
                     trailingIcon = { Text("R$") },
                     singleLine = true
                 )
@@ -123,10 +125,10 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                 OutlinedTextField(
                     value = precoGasolina,
                     onValueChange = { precoGasolina = it },
-                    label = { Text("Gasolina") },
+                    label = { Text(stringResource(R.string.gasoline)) },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    leadingIcon = { Icon(Icons.Filled.LocalGasStation, contentDescription = "Preço Gasolina") },
+                    leadingIcon = { Icon(Icons.Filled.LocalGasStation, contentDescription = stringResource(R.string.price_gasoline)) },
                     trailingIcon = { Text("R$") },
                     singleLine = true
                 )
@@ -145,11 +147,11 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                 ) {
                     Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
                         Text(
-                            "Resultado (Álcool < 70% da Gasolina):",
+                            stringResource(R.string.alc_gas_result_label),
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
-                            if (checkedState) "Álcool parece vantajoso." else "Gasolina parece vantajosa.",
+                            if (checkedState) stringResource(R.string.alc_gas_alcohol_seems_advantageous) else stringResource(R.string.alc_gas_gasoline_seems_advantageous),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -164,7 +166,7 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                             if (checkedState) {
                                 Icon(
                                     imageVector = Icons.Filled.Check,
-                                    contentDescription = "Álcool Vantajoso",
+                                    contentDescription = stringResource(R.string.alc_gas_switch_alcohol_advantageous),
                                     modifier = Modifier.size(SwitchDefaults.IconSize),
                                     tint = MaterialTheme.colorScheme.primary
                                 )
@@ -178,33 +180,33 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                 onClick = {
                     val alcohol = precoAlcool.replace(",", ".").toDoubleOrNull()
                     val gas = precoGasolina.replace(",", ".").toDoubleOrNull()
-                    val currentPostoNome = nome.ifEmpty { "Este posto" }
+                    val currentPostoNome = nome.ifEmpty { context.getString(R.string.this_station) }
 
                     when {
                         alcohol == null || gas == null -> {
-                            resultadoCalculo = "Valores de preço inválidos."
+                            resultadoCalculo = context.getString(R.string.invalid_price_values)
                         }
                         gas == 0.0 -> {
-                            resultadoCalculo = "Preço da gasolina não pode ser zero."
+                            resultadoCalculo = context.getString(R.string.gasoline_price_cannot_be_zero) // Alterado
                         }
                         alcohol / gas < 0.7 -> {
                             checkedState = true
-                            resultadoCalculo = "$currentPostoNome: Álcool é a melhor opção!"
+                            resultadoCalculo = context.getString(R.string.alcohol_is_better_option, currentPostoNome)
                         }
                         else -> {
                             checkedState = false
-                            resultadoCalculo = "$currentPostoNome: Gasolina é a melhor opção!"
+                            resultadoCalculo = context.getString(R.string.gasoline_is_better_option, currentPostoNome)
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp)
             ) {
-                Icon(Icons.Filled.Calculate, contentDescription = "Recalcular", modifier = Modifier.size(ButtonDefaults.IconSize))
+                Icon(Icons.Filled.Calculate, contentDescription = stringResource(R.string.edit_station_button_recalculate), modifier = Modifier.size(ButtonDefaults.IconSize))
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Recalcular Melhor Opção")
+                Text(stringResource(R.string.edit_station_button_recalculate_best_option))
             }
 
-            if (resultadoCalculo != "Preencha os valores para calcular.") {
+            if (resultadoCalculo != stringResource(R.string.edit_station_fill_prices_to_calculate)) {
                 Text(
                     text = resultadoCalculo,
                     style = MaterialTheme.typography.titleLarge,
@@ -212,13 +214,14 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                         .padding(vertical = 8.dp)
                         .animateContentSize(),
                     textAlign = TextAlign.Center,
-                    color = if (resultadoCalculo.contains("Álcool", ignoreCase = true) && checkedState) MaterialTheme.colorScheme.primary
-                    else if (resultadoCalculo.contains("Gasolina", ignoreCase = true) && !checkedState) MaterialTheme.colorScheme.primary
+                    color = if (resultadoCalculo.contains(stringResource(R.string.alcohol), ignoreCase = true) && checkedState) MaterialTheme.colorScheme.primary
+                    else if (resultadoCalculo.contains(stringResource(R.string.gasoline), ignoreCase = true) && !checkedState) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.onSurface
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
+
             Button(
                 onClick = {
                     val novoPrecoAlcoolDouble = precoAlcool.replace(",", ".").toDoubleOrNull()
@@ -235,9 +238,9 @@ fun EditarPostoScreen(index: Int, navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Icon(Icons.Filled.Save, contentDescription = "Salvar", modifier = Modifier.size(ButtonDefaults.IconSize))
+                Icon(Icons.Filled.Save, contentDescription = stringResource(R.string.save), modifier = Modifier.size(ButtonDefaults.IconSize))
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Salvar Alterações")
+                Text(stringResource(R.string.edit_station_button_save_changes))
             }
         }
     }
