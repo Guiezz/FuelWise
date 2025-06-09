@@ -109,6 +109,9 @@ fun ListaDePostos(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 itemsIndexed(postos, key = { _, posto -> posto.nome.toString() + (posto.coordenadas?.latitude ?: 0.0) }) { index, posto ->
+                    // Define o nome do posto para uso nas descrições de conteúdo
+                    val postoNome = posto.nome?.takeIf { it.isNotBlank() } ?: stringResource(id = R.string.unnamed_station)
+
                     Card(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -123,13 +126,16 @@ fun ListaDePostos(
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.LocalGasStation,
-                                contentDescription = stringResource(id = R.string.list_station_icon_description),
-                                modifier = Modifier.size(40.dp).padding(end = 16.dp),
+                                // ALTERADO: Descrição de conteúdo dinâmica
+                                contentDescription = stringResource(id = R.string.list_station_icon_description_dynamic, postoNome),
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(end = 16.dp),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = posto.nome ?: stringResource(id = R.string.unnamed_station),
+                                    text = postoNome, // Usa a variável para consistência
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -158,13 +164,21 @@ fun ListaDePostos(
                                 IconButton(onClick = {
                                     navController.navigate("editar/$index")
                                 }) {
-                                    Icon(Icons.Default.Edit, contentDescription = stringResource(id = R.string.list_edit_station), tint = MaterialTheme.colorScheme.primary)
+                                    Icon(
+                                        Icons.Default.Edit,
+                                        // ALTERADO: Descrição de conteúdo dinâmica
+                                        contentDescription = stringResource(id = R.string.list_edit_station_dynamic, postoNome),
+                                        tint = MaterialTheme.colorScheme.primary)
                                 }
                                 IconButton(onClick = {
                                     postoPrefs.deletarPosto(index)
                                     postos = postoPrefs.getPostos()
                                 }) {
-                                    Icon(Icons.Default.Delete, contentDescription = stringResource(id = R.string.list_delete_station), tint = MaterialTheme.colorScheme.error)
+                                    Icon(
+                                        Icons.Default.Delete,
+                                        // ALTERADO: Descrição de conteúdo dinâmica
+                                        contentDescription = stringResource(id = R.string.list_delete_station_dynamic, postoNome),
+                                        tint = MaterialTheme.colorScheme.error)
                                 }
                                 if (posto.coordenadas != null && (posto.coordenadas.latitude != 0.0 || posto.coordenadas.longitude != 0.0)) {
                                     IconButton(onClick = {
@@ -185,7 +199,11 @@ fun ListaDePostos(
                                             context.startActivity(webIntent)
                                         }
                                     }) {
-                                        Icon(Icons.Filled.Map, contentDescription = stringResource(id = R.string.list_open_in_map), tint = MaterialTheme.colorScheme.secondary)
+                                        Icon(
+                                            Icons.Filled.Map,
+                                            // ALTERADO: Descrição de conteúdo dinâmica
+                                            contentDescription = stringResource(id = R.string.list_open_in_map_dynamic, postoNome),
+                                            tint = MaterialTheme.colorScheme.secondary)
                                     }
                                 }
                             }

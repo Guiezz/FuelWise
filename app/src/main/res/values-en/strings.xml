@@ -58,6 +58,11 @@
     <string name="list_open_in_map">Open in Map</string>
     <string name="list_map_fallback_station_name">Station</string> <string name="main_invalid_index">Invalid index</string>
 
+    <string name="list_edit_station_dynamic">"Edit station %1$s"</string>
+    <string name="list_delete_station_dynamic">"Delete station %1$s"</string>
+    <string name="list_open_in_map_dynamic">"Open location for station %1$s in map"</string>
+    <string name="list_station_icon_description_dynamic">"Icon for station %1$s"</string>
+
     <string name="input_type_something">Type something</string>
     <string name="input_go_to_next_screen">Go to next screen</string>
 </resources>
